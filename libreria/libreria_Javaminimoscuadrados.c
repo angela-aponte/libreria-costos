@@ -7,12 +7,15 @@
  * Signature: ([FI)F
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_suma
-  (JNIEnv *, jobject, jfloatArray, jint){
-jfloat *arr = (*env)->GetFloatArrayElements(env, vector, NULL);
+  (JNIEnv *env, jobject obj, jfloatArray vector, jint n) {
+
+    jfloat *arr = (*env)->GetFloatArrayElements(env, vector, NULL);
     jfloat suma = 0;
+
     for (int i = 0; i < n; i++) {
         suma += arr[i];
     }
+
     (*env)->ReleaseFloatArrayElements(env, vector, arr, 0);
     return suma;
 }
@@ -23,16 +26,19 @@ jfloat *arr = (*env)->GetFloatArrayElements(env, vector, NULL);
  * Signature: ([F[FI)F
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_sumaProducto
-  (JNIEnv *, jobject, jfloatArray, jfloatArray, jint){jfloat *arr1 = (*env)->GetFloatArrayElements(env, vector1, NULL);
+  (JNIEnv *env, jobject obj, jfloatArray vector1, jfloatArray vector2, jint n) {
+
+    jfloat *arr1 = (*env)->GetFloatArrayElements(env, vector1, NULL);
     jfloat *arr2 = (*env)->GetFloatArrayElements(env, vector2, NULL);
-    jfloat suma = 0;
+    jfloat sumaProducto = 0;
+
     for (int i = 0; i < n; i++) {
-        suma += arr1[i] * arr2[i];
+        sumaProducto += arr1[i] * arr2[i];
     }
+
     (*env)->ReleaseFloatArrayElements(env, vector1, arr1, 0);
     (*env)->ReleaseFloatArrayElements(env, vector2, arr2, 0);
-    return suma;
-
+    return sumaProducto;
 }
 
 /*
@@ -41,15 +47,17 @@ JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_sumaProducto
  * Signature: ([FI)F
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_sumaCuadrados
-  (JNIEnv *, jobject, jfloatArray, jint){jfloat *arr = (*env)->GetFloatArrayElements(env, vector, NULL);
-    jfloat suma = 0;
+  (JNIEnv *env, jobject obj, jfloatArray vector, jint n) {
+
+    jfloat *arr = (*env)->GetFloatArrayElements(env, vector, NULL);
+    jfloat sumaCuadrados = 0;
+
     for (int i = 0; i < n; i++) {
-        suma += arr[i] * arr[i];
+        sumaCuadrados += arr[i] * arr[i];
     }
+
     (*env)->ReleaseFloatArrayElements(env, vector, arr, 0);
-    return suma;
-
-
+    return sumaCuadrados;
 }
 /*
  * Class:     libreria_Javaminimoscuadrados
@@ -57,40 +65,36 @@ JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_sumaCuadrados
  * Signature: ([F[FI)F
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularPendiente
-  (JNIEnv *, jobject, jfloatArray, jfloatArray, jint){
-float *arrX = (*env)->GetFloatArrayElements(env, x, NULL);
-    jfloat *arrY = (*env)->GetFloatArrayElements(env, y, NULL);
+  (JNIEnv *env, jobject obj, jfloatArray x, jfloatArray y, jint n) {
 
-    jfloat sumaX = 0, sumaY = 0, sumaXY = 0, sumaX2 = 0;
+    jfloat *arrX = (*env)->GetFloatArrayElements(env, x, NULL);
+    jfloat *arrY = (*env)->GetFloatArrayElements(env, y, NULL);
+    jfloat sumaXY = 0, sumaX = 0, sumaY = 0, sumaX2 = 0;
+
     for (int i = 0; i < n; i++) {
+        sumaXY += arrX[i] * arrY[i];
         sumaX += arrX[i];
         sumaY += arrY[i];
-        sumaXY += arrX[i] * arrY[i];
         sumaX2 += arrX[i] * arrX[i];
     }
 
     (*env)->ReleaseFloatArrayElements(env, x, arrX, 0);
     (*env)->ReleaseFloatArrayElements(env, y, arrY, 0);
 
-    jfloat numerador = (n * sumaXY) - (sumaX * sumaY);
-    jfloat denominador = (n * sumaX2) - (sumaX * sumaX);
-
-    if (denominador == 0) return 0; // para evitar división por cero
-
-    return numerador / denominador;
+    return (n * sumaXY - sumaX * sumaY) / (n * sumaX2 - sumaX * sumaX);
 }
-
 /*
  * Class:     libreria_Javaminimoscuadrados
  * Method:    calcularOrdenada
  * Signature: ([F[FIF)F
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularOrdenada
-  (JNIEnv *, jobject, jfloatArray, jfloatArray, jint, jfloat){
-jfloat *arrX = (*env)->GetFloatArrayElements(env, x, NULL);
+  (JNIEnv *env, jobject obj, jfloatArray x, jfloatArray y, jint n, jfloat pendiente) {
+ 
+    jfloat *arrX = (*env)->GetFloatArrayElements(env, x, NULL);
     jfloat *arrY = (*env)->GetFloatArrayElements(env, y, NULL);
-
     jfloat sumaX = 0, sumaY = 0;
+
     for (int i = 0; i < n; i++) {
         sumaX += arrX[i];
         sumaY += arrY[i];
