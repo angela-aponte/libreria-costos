@@ -1,0 +1,10 @@
+services:
+  spring-jni:
+    image: 'angela011/libreria-costos:latest'
+    ports:
+      - '8083:8080'
+    networks:
+      - red-backend-app
+networks:
+  red-backend-app:
+    driver: bridge

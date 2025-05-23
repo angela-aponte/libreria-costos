@@ -47,6 +47,14 @@ JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularPendiente
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularOrdenada
   (JNIEnv *, jobject, jfloatArray, jfloatArray, jint, jfloat);
 
+/*
+ * Class:     libreria_Javaminimoscuadrados
+ * Method:    pronosticarVentas
+ * Signature: ([FFFI)[F
+ */
+JNIEXPORT jfloatArray JNICALL Java_libreria_Javaminimoscuadrados_pronosticarVentas
+  (JNIEnv *, jobject, jfloatArray, jfloat, jfloat, jint);
+
 #ifdef __cplusplus
 }
 #endif

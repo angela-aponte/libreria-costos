@@ -11,7 +11,7 @@ public class Aplicacion {
         try {
             System.loadLibrary("mincuadrados"); // Asegúrate que el nombre coincida con tu .so o .dll generado
         } catch (UnsatisfiedLinkError e) {
-            System.err.println("Error al cargar la biblioteca nativa 'minimoscuadrados': " + e);
+            System.err.println("Error al cargar la biblioteca nativa 'mincuadrados': " + e);
             System.exit(1);
         }
     }
@@ -19,8 +19,8 @@ public class Aplicacion {
     public Aplicacion() {
         this.minimosCuadrados = new Javaminimoscuadrados();
 
-        float[] vector1 = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
-        float[] vector2 = {2.0f, 4.0f, 5.0f, 4.0f, 5.0f};
+        float[] vector1 = {1f, 2f, 3f, 4f, 5f, 6f};
+	float[] vector2 = {1500f, 2000f, 2200f, 2400f, 2800f, 3000f};
         int n = vector1.length;
 
         float sumaVector1 = minimosCuadrados.suma(vector1, n);
@@ -32,16 +32,13 @@ public class Aplicacion {
         float sumaCuadradosVector1 = minimosCuadrados.sumaCuadrados(vector1, n);
         System.out.println("La suma de los cuadrados del vector1 es: " + sumaCuadradosVector1);
 
-        // Datos de ejemplo para regresión lineal
-        float[] xData = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
-        float[] yData = {2.1f, 3.9f, 6.2f, 8.1f, 9.8f};
-        int numPuntos = xData.length;
-
-        float pendiente = minimosCuadrados.calcularPendiente(xData, yData, numPuntos);
+        float pendiente = minimosCuadrados.calcularPendiente(vector1, vector2, n);
         System.out.println("La pendiente de la regresión lineal es: " + pendiente);
 
-        float ordenada = minimosCuadrados.calcularOrdenada(xData, yData, numPuntos, pendiente);
+        float ordenada = minimosCuadrados.calcularOrdenada(vector1, vector2, n, pendiente);
         System.out.println("La ordenada al origen de la regresión lineal es: " + ordenada);
+	float[] pronosticos = minimosCuadrados.pronosticarVentas(new float[]{7f, 8f, 9f, 10f, 11f, 12f}, pendiente, ordenada, 6);
+	for(int i = 0; i < 6; i++) System.out.println(pronosticos[i]);
     }
 
     public static void main(String[] args) {

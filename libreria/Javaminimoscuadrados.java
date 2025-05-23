@@ -10,6 +10,8 @@
 
  public native float calcularPendiente(float[] x, float[] y, int n);
 
- public native float calcularOrdenada(float[] x, float[] y, int n, float pendiente); 
+ public native float calcularOrdenada(float[] x, float[] y, int n, float pendiente);
+
+ public native float[] pronosticarVentas(float[] meses, float pendiente, float ordenada, int n);
 
 }

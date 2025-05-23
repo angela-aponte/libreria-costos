@@ -1,5 +1,6 @@
 
 #include <jni.h>
+#include <stdlib.h>
 #include "libreria_Javaminimoscuadrados.h"
 /*
  * Class:     libreria_Javaminimoscuadrados
@@ -90,7 +91,7 @@ JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularPendiente
  */
 JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularOrdenada
   (JNIEnv *env, jobject obj, jfloatArray x, jfloatArray y, jint n, jfloat pendiente) {
- 
+
     jfloat *arrX = (*env)->GetFloatArrayElements(env, x, NULL);
     jfloat *arrY = (*env)->GetFloatArrayElements(env, y, NULL);
     jfloat sumaX = 0, sumaY = 0;
@@ -104,4 +105,29 @@ JNIEXPORT jfloat JNICALL Java_libreria_Javaminimoscuadrados_calcularOrdenada
     (*env)->ReleaseFloatArrayElements(env, y, arrY, 0);
 
     return (sumaY - pendiente * sumaX) / n;
+}
+/*
+ * Class:     libreria_Javaminimoscuadrados
+ * Method:    pronosticarVentas
+ * Signature: ([FFFI)[F
+ */
+JNIEXPORT jfloatArray JNICALL Java_libreria_Javaminimoscuadrados_pronosticarVentas
+  (JNIEnv *env, jobject obj, jfloatArray meses, jfloat pendiente, jfloat ordenada, jint n) {
+
+    jfloat *xMeses = (*env)->GetFloatArrayElements(env, meses, 0);
+
+    jfloatArray resultado = (*env)->NewFloatArray(env, n);
+    jfloat *yVentas =(jfloat*) malloc(n * sizeof(jfloat));
+
+    for (int i = 0; i < n; i++) {
+        yVentas[i] = ordenada + pendiente * xMeses[i]; // Y = a + bX
+    }
+
+    (*env)->SetFloatArrayRegion(env, resultado, 0, n, yVentas);
+
+    // Liberar memoria
+    free(yVentas);
+    (*env)->ReleaseFloatArrayElements(env, meses, xMeses, 0);
+
+    return resultado;
 }
